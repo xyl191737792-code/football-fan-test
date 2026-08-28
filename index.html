@@ -1647,8 +1647,12 @@
     .hero-title {
       max-width: 4.9em;
       font-size: clamp(42px, 5.7vw, 72px);
-      line-height: .9;
+      line-height: 1.02;
       letter-spacing: -.04em;
+    }
+
+    .hero-title .outline {
+      margin-top: 4px;
     }
 
     .hero-lede {
@@ -1890,6 +1894,8 @@
 
     .result-section {
       min-width: 0;
+      width: 100%;
+      max-width: 100%;
     }
 
     .section-label {
@@ -2196,6 +2202,18 @@
         height: min(58vh, 470px);
       }
 
+      .lineup-character {
+        top: auto;
+        bottom: auto;
+      }
+
+      .lineup-character:nth-child(1) { top: 10px; left: 4%; right: auto; width: 124px; z-index: 1; }
+      .lineup-character:nth-child(2) { top: -4px; left: 39%; right: auto; width: 138px; z-index: 1; }
+      .lineup-character:nth-child(3) { top: 12px; left: auto; right: 3%; width: 122px; z-index: 1; }
+      .lineup-character:nth-child(4) { top: auto; bottom: 34px; left: 5%; right: auto; width: 158px; z-index: 3; }
+      .lineup-character:nth-child(5) { top: auto; bottom: 14px; left: 36%; right: auto; width: 172px; z-index: 4; }
+      .lineup-character:nth-child(6) { top: auto; bottom: 34px; left: auto; right: 4%; width: 156px; z-index: 3; }
+
       .result-hero {
         grid-template-columns: minmax(0, 1fr) minmax(260px, 350px);
         min-height: 390px;
@@ -2263,12 +2281,22 @@
       }
 
       .lineup {
-        height: min(30vh, 248px);
+        height: min(41vh, 330px);
+        margin-top: 10px;
+        align-self: start;
       }
 
       .lineup-character {
-        bottom: 28px;
+        top: auto;
+        bottom: auto;
       }
+
+      .lineup-character:nth-child(1) { top: 14px; left: -8px; right: auto; width: 82px; z-index: 1; }
+      .lineup-character:nth-child(2) { top: 0; left: calc(50% - 46px); right: auto; width: 92px; z-index: 1; }
+      .lineup-character:nth-child(3) { top: 14px; left: auto; right: -8px; width: 82px; z-index: 1; }
+      .lineup-character:nth-child(4) { top: auto; bottom: 30px; left: 4px; right: auto; width: 104px; z-index: 3; }
+      .lineup-character:nth-child(5) { top: auto; bottom: 18px; left: calc(50% - 55px); right: auto; width: 110px; z-index: 4; }
+      .lineup-character:nth-child(6) { top: auto; bottom: 30px; left: auto; right: 4px; width: 104px; z-index: 3; }
     }
 
     @media (max-width: 480px) {
@@ -2282,19 +2310,19 @@
       }
 
       .lineup {
-        height: min(28vh, 220px);
+        height: min(39vh, 320px);
       }
 
       .lineup-character {
         padding: 7px 7px 30px;
       }
 
-      .lineup-character:nth-child(1) { left: -20px; width: 82px; }
-      .lineup-character:nth-child(2) { left: 3%; width: 92px; }
-      .lineup-character:nth-child(3) { left: 24%; width: 106px; }
-      .lineup-character:nth-child(4) { right: 24%; width: 102px; }
-      .lineup-character:nth-child(5) { right: 5%; width: 90px; }
-      .lineup-character:nth-child(6) { right: -18px; width: 80px; }
+      .lineup-character:nth-child(1) { top: 14px; left: -8px; right: auto; width: 82px; }
+      .lineup-character:nth-child(2) { top: 0; left: calc(50% - 46px); right: auto; width: 92px; }
+      .lineup-character:nth-child(3) { top: 14px; left: auto; right: -8px; width: 82px; }
+      .lineup-character:nth-child(4) { top: auto; bottom: 30px; left: 4px; right: auto; width: 104px; }
+      .lineup-character:nth-child(5) { top: auto; bottom: 18px; left: calc(50% - 55px); right: auto; width: 110px; }
+      .lineup-character:nth-child(6) { top: auto; bottom: 30px; left: auto; right: 4px; width: 104px; }
 
       .result-title {
         font-size: 36px;
@@ -2331,7 +2359,7 @@
       }
 
       .lineup {
-        height: 198px;
+        height: 310px;
       }
 
       .result-copy {
