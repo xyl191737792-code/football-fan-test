@@ -600,7 +600,6 @@
       color: var(--white);
       font-size: 11px;
     }
-    .share-url.show { display: block; }
     .footer-actions { display: flex; flex-wrap: wrap; gap: 18px; padding-top: 1px; }
     .text-btn {
       padding: 8px 0;
@@ -1622,6 +1621,740 @@
       }
     }
   </style>
+  <style id="v4-review">
+    .start-layout {
+      gap: 14px;
+      padding-top: 12px;
+      padding-bottom: max(8px, var(--safe-bottom));
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .hero-copy {
+      display: grid;
+      align-content: start;
+      gap: 0;
+      max-width: 480px;
+      padding-bottom: 0;
+    }
+
+    .kicker {
+      margin-bottom: 10px;
+      padding: 5px 9px;
+      font-size: 9px;
+    }
+
+    .hero-title {
+      max-width: 4.9em;
+      font-size: clamp(42px, 5.7vw, 72px);
+      line-height: .9;
+      letter-spacing: -.04em;
+    }
+
+    .hero-lede {
+      max-width: 28em;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.48;
+    }
+
+    .hero-meta {
+      gap: 6px;
+      margin: 12px 0 14px;
+    }
+
+    .hero-meta span {
+      padding: 5px 9px;
+      font-size: 9px;
+    }
+
+    .primary {
+      min-width: 208px;
+      min-height: 48px;
+    }
+
+    .legal {
+      max-width: 32em;
+      margin-top: 8px;
+      font-size: 8.8px;
+      line-height: 1.4;
+      opacity: .88;
+    }
+
+    .lineup {
+      height: clamp(220px, 30vh, 356px);
+      margin: -6px 0 0;
+      align-self: end;
+    }
+
+    .lineup::before {
+      width: 100%;
+      height: clamp(70px, 13vh, 108px);
+      border-radius: 32px;
+    }
+
+    .lineup::after {
+      bottom: 10px;
+      left: 14px;
+      right: auto;
+      padding: 6px 9px;
+      font-size: 8.5px;
+      letter-spacing: .1em;
+    }
+
+    .lineup-character {
+      --card-accent: #078a49;
+      bottom: clamp(26px, 6vh, 58px);
+      padding: 8px 8px 34px;
+      border-radius: 22px 22px 16px 16px;
+      box-shadow: 0 12px 24px rgba(17, 71, 40, .11);
+      transform-origin: 50% 100%;
+    }
+
+    .lineup-character::before {
+      background:
+        radial-gradient(circle at 50% 14%, rgba(255,255,255,.98), transparent 42%),
+        linear-gradient(180deg, color-mix(in srgb, var(--card-accent) 14%, #fff) 0, rgba(255,255,255,.58) 100%);
+    }
+
+    .lineup-character::after {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      background:
+        linear-gradient(140deg, rgba(255,255,255,.94), rgba(255,255,255,.08)),
+        linear-gradient(135deg, color-mix(in srgb, var(--card-accent) 36%, #fff), transparent 72%);
+      box-shadow: 0 8px 18px color-mix(in srgb, var(--card-accent) 18%, transparent);
+    }
+
+    .lineup-character svg {
+      margin-top: 2px;
+      transform: translateY(2px) scale(1.02);
+    }
+
+    .lineup-character:nth-child(1) { --card-accent: #ff6b52; transform: rotate(-3deg); }
+    .lineup-character:nth-child(2) { --card-accent: #55c8ef; transform: rotate(-1.6deg); }
+    .lineup-character:nth-child(3) { --card-accent: #3b86ff; transform: rotate(-2deg); }
+    .lineup-character:nth-child(4) { --card-accent: #ff7e55; transform: rotate(1.2deg); }
+    .lineup-character:nth-child(5) { --card-accent: #25b994; transform: rotate(2.2deg); }
+    .lineup-character:nth-child(6) { --card-accent: #f26b56; transform: rotate(3deg); }
+
+    .lineup-badge {
+      min-width: 32px;
+      height: 24px;
+      font-size: 8.5px;
+      box-shadow: 3px 3px 0 var(--card-accent);
+    }
+
+    .lineup-caption {
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      gap: 1px;
+      padding: 8px 9px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.97), rgba(244,248,245,.92));
+    }
+
+    .lineup-caption strong {
+      font-size: 10px;
+    }
+
+    .lineup-caption span {
+      font-size: 8px;
+    }
+
+    .result-wrap {
+      padding-bottom: max(14px, var(--safe-bottom));
+    }
+
+    .result-hero {
+      min-height: 382px;
+      margin: 12px 10px 0;
+      padding: 18px 16px 16px;
+      border-radius: 22px;
+      box-shadow: 0 16px 30px rgba(22, 77, 44, .09);
+    }
+
+    .result-hero::before {
+      top: -2%;
+      left: 2%;
+      font-size: clamp(170px, 26vw, 290px);
+      opacity: .7;
+    }
+
+    .result-hero::after {
+      height: 88px;
+    }
+
+    .result-copy {
+      gap: 0;
+      max-width: 100%;
+      padding-top: 204px;
+    }
+
+    .result-topline {
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .result-code,
+    .result-role {
+      min-height: 28px;
+      padding: 0 10px;
+      align-items: center;
+      font-size: 10px;
+    }
+
+    .result-title {
+      max-width: 7.2em;
+      font-size: clamp(32px, 8vw, 50px);
+      line-height: .94;
+    }
+
+    .result-slogan {
+      max-width: 100%;
+      margin-top: 8px;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .result-tags {
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .result-tag {
+      min-height: 28px;
+      padding: 0 11px;
+      font-size: 9.5px;
+    }
+
+    .result-hud {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .result-hud .hud-item:last-child {
+      grid-column: 1 / -1;
+    }
+
+    .hud-item {
+      padding: 10px 11px 9px;
+      border-radius: 14px;
+    }
+
+    .hud-item span {
+      margin-bottom: 6px;
+      font-size: 9px;
+    }
+
+    .hud-item strong {
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .result-character {
+      top: 6px;
+      right: -12px;
+      bottom: auto;
+      width: min(58vw, 292px);
+      filter: drop-shadow(0 20px 16px rgba(18, 65, 38, .17));
+    }
+
+    .result-screen[data-theme="magician"] .result-character {
+      right: -12px;
+      left: auto;
+      transform: none;
+    }
+
+    .result-orbit {
+      top: 8px;
+      right: -6%;
+      bottom: auto;
+      width: min(66vw, 300px);
+      border-width: 10px;
+      opacity: .58;
+    }
+
+    .result-screen[data-theme="magician"] .result-orbit {
+      right: -6%;
+      left: auto;
+    }
+
+    .result-content {
+      gap: 14px;
+      padding: 14px 10px 0;
+    }
+
+    .result-section {
+      min-width: 0;
+    }
+
+    .section-label {
+      margin-bottom: 10px;
+    }
+
+    .result-desc {
+      font-size: 14.5px;
+      line-height: 1.55;
+    }
+
+    .trait-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .trait-row {
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      padding: 10px 11px 9px;
+      border: 1px solid #dfe7e1;
+      border-radius: 14px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 8px 20px rgba(18, 65, 38, .06);
+    }
+
+    .trait-row span,
+    .trait-row strong {
+      font-size: 11px;
+    }
+
+    .trait-track {
+      grid-column: 1 / -1;
+      height: 7px;
+    }
+
+    .insight-grid {
+      gap: 8px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .insight-item:last-child {
+      grid-column: 1 / -1;
+    }
+
+    .insight-item {
+      min-height: 0;
+      padding: 12px 12px 10px;
+      border-radius: 14px;
+    }
+
+    .insight-item h3 {
+      margin-bottom: 5px;
+      font-size: 11px;
+    }
+
+    .insight-item p {
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+
+    .share-band {
+      gap: 10px;
+      padding: 14px;
+      border-radius: 14px;
+    }
+
+    .share-intro {
+      display: grid;
+      gap: 6px;
+    }
+
+    .share-band h3 {
+      margin-bottom: 2px;
+      font-size: 16px;
+    }
+
+    .share-band p {
+      font-size: 11.5px;
+      line-height: 1.45;
+    }
+
+    .share-actions {
+      gap: 8px;
+    }
+
+    .share-inline-tip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 2px 0 0;
+    }
+
+    .share-inline-tip span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #f2f6f3;
+      color: #587163;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    .secondary {
+      min-height: 42px;
+      font-size: 11.5px;
+    }
+
+    .share-url {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 12px 13px;
+      border: 1px solid #d7e1db;
+      border-radius: 14px;
+      background: #f7faf7;
+      color: #183427;
+      cursor: text;
+      user-select: all;
+      font-size: 10.5px;
+      line-height: 1.5;
+    }
+
+    .footer-actions {
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .share-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      min-height: 32px;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: rgba(16,37,26,.08);
+      color: #294437;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .qr-panel {
+      position: relative;
+      display: grid;
+      gap: 14px;
+      width: min(100%, 420px);
+      padding: 18px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 100% 0, rgba(201,244,59,.36), transparent 30%),
+        linear-gradient(180deg, #ffffff, #f3f7f4);
+      box-shadow: 0 28px 54px rgba(19, 74, 42, .18);
+      text-align: left;
+    }
+
+    .share-preview {
+      display: grid;
+      gap: 6px;
+      padding: 4px 58px 2px 0;
+    }
+
+    .share-preview-code {
+      display: inline-flex;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #10251a;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .share-preview-title {
+      margin: 0;
+      color: #10251a;
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.04;
+      font-family: "DIN Condensed", "Avenir Next Condensed", "PingFang SC", sans-serif;
+    }
+
+    .share-preview-text {
+      margin: 0;
+      color: #5c7367;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .share-switch {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      padding: 4px;
+      border-radius: 999px;
+      background: #edf3ee;
+    }
+
+    .share-switch-btn {
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: transparent;
+      color: #678072;
+      font-size: 12px;
+      font-weight: 900;
+      transition: background .2s var(--ease-out), color .2s var(--ease-out), box-shadow .2s var(--ease-out);
+    }
+
+    .share-switch-btn[aria-selected="true"] {
+      background: #fff;
+      color: #10251a;
+      box-shadow: 0 8px 18px rgba(20, 73, 43, .1);
+    }
+
+    .share-view {
+      display: none;
+      gap: 10px;
+    }
+
+    .share-view.active {
+      display: grid;
+    }
+
+    .share-field-label {
+      color: #658073;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .04em;
+    }
+
+    .share-helper,
+    #qrFallback {
+      margin: 0;
+      color: #667f72;
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .qr-frame {
+      display: grid;
+      min-height: 252px;
+      place-items: center;
+      padding: 18px;
+      border: 1px solid #dfe7e1;
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(245,248,245,.98));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
+    }
+
+    .qr-frame.loading::before {
+      content: "二维码生成中";
+      color: #7a8c82;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    .qr-frame img {
+      display: block;
+      width: min(100%, 220px);
+      height: auto;
+      aspect-ratio: 1;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 12px 24px rgba(22,68,41,.08);
+      opacity: 1;
+      transition: opacity .2s ease;
+    }
+
+    .qr-frame.loading img {
+      opacity: 0;
+    }
+
+    .share-modal-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .share-modal-actions[data-layout="single"] {
+      grid-template-columns: 1fr;
+    }
+
+    .text-btn {
+      font-size: 12px;
+    }
+
+    @media (min-width: 760px) {
+      .start-layout {
+        grid-template-columns: minmax(0, .92fr) minmax(470px, 1.08fr);
+        gap: 12px;
+        padding-top: 16px;
+      }
+
+      .hero-copy {
+        padding-bottom: 10px;
+      }
+
+      .lineup {
+        height: min(58vh, 470px);
+      }
+
+      .result-hero {
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 350px);
+        min-height: 390px;
+        margin: 18px 18px 0;
+        padding: 24px 28px 22px;
+      }
+
+      .result-copy {
+        padding-top: 2px;
+        max-width: 540px;
+      }
+
+      .result-character {
+        top: auto;
+        right: 8px;
+        bottom: -4px;
+        width: min(33vw, 320px);
+      }
+
+      .result-screen[data-theme="magician"] .result-character {
+        left: 1%;
+        right: auto;
+        transform: scaleX(-1);
+      }
+
+      .result-orbit {
+        top: auto;
+        right: 2%;
+        bottom: 3%;
+        width: min(34vw, 350px);
+      }
+
+      .result-screen[data-theme="magician"] .result-orbit {
+        left: 2%;
+        right: auto;
+      }
+
+      .result-content {
+        grid-template-columns: 1.02fr .98fr;
+        gap: 16px 18px;
+        padding: 18px 18px 0;
+      }
+
+      .result-content .wide {
+        grid-column: 1 / -1;
+      }
+
+      .insight-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+       .insight-item:last-child {
+        grid-column: auto;
+      }
+
+      .share-band {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 759px) {
+      .start-layout {
+        grid-template-rows: auto 1fr;
+      }
+
+      .lineup {
+        height: min(30vh, 248px);
+      }
+
+      .lineup-character {
+        bottom: 28px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        max-width: 4.4em;
+        font-size: 38px;
+      }
+
+      .hero-lede {
+        font-size: 12.5px;
+      }
+
+      .lineup {
+        height: min(28vh, 220px);
+      }
+
+      .lineup-character {
+        padding: 7px 7px 30px;
+      }
+
+      .lineup-character:nth-child(1) { left: -20px; width: 82px; }
+      .lineup-character:nth-child(2) { left: 3%; width: 92px; }
+      .lineup-character:nth-child(3) { left: 24%; width: 106px; }
+      .lineup-character:nth-child(4) { right: 24%; width: 102px; }
+      .lineup-character:nth-child(5) { right: 5%; width: 90px; }
+      .lineup-character:nth-child(6) { right: -18px; width: 80px; }
+
+      .result-title {
+        font-size: 36px;
+      }
+
+      .result-copy {
+        padding-top: 186px;
+      }
+
+      .result-character {
+        width: min(56vw, 236px);
+      }
+
+      .result-hero {
+        min-height: 352px;
+      }
+
+      .result-orbit {
+        width: min(60vw, 248px);
+      }
+
+      .share-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .hero-meta {
+        margin: 12px 0 14px;
+      }
+
+      .legal {
+        font-size: 8px;
+      }
+
+      .lineup {
+        height: 198px;
+      }
+
+      .result-copy {
+        padding-top: 172px;
+      }
+
+      .trait-list,
+      .result-hud,
+      .insight-grid,
+      .share-modal-actions,
+      .share-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .result-hud .hud-item:last-child {
+        grid-column: auto;
+      }
+
+      .insight-item:last-child {
+        grid-column: auto;
+      }
+    }
+  </style>
 </head>
 <body>
   <svg class="sprite-bank" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
@@ -1691,6 +2424,7 @@
           <ellipse cx="121" cy="103" rx="61" ry="62" fill="url(#skin-warm)"/>
           <path d="M62 100q4-62 57-70 48 2 63 55-15-15-41-28 6 18-42 30-21 5-37 27Z" fill="url(#hair-dark)"/>
           <path d="M92 47q27-23 61 2" fill="none" stroke="#624841" stroke-width="10" stroke-linecap="round" opacity=".65"/>
+          <path d="M88 74q25 10 60-2" fill="none" stroke="#8d6b63" stroke-width="6" stroke-linecap="round" opacity=".28"/>
           <path d="M86 101q10-7 20 0M140 101q10-7 20 0" fill="none" stroke="#1b1718" stroke-width="6" stroke-linecap="round"/>
           <circle cx="97" cy="108" r="4" fill="#171516"/><circle cx="150" cy="108" r="4" fill="#171516"/>
           <path d="m122 108-6 13 9 1" fill="none" stroke="#b66e50" stroke-width="3" stroke-linecap="round"/>
@@ -1718,6 +2452,8 @@
           <circle cx="96" cy="107" r="4" fill="#171516"/><circle cx="146" cy="107" r="4" fill="#171516"/>
           <path d="m119 108-5 12 8 2" fill="none" stroke="#9a573f" stroke-width="3" stroke-linecap="round"/>
           <path d="M105 132q14 9 28 0" fill="none" stroke="#f5ceb0" stroke-width="4" stroke-linecap="round"/>
+          <path d="M101 137q17 16 34 0-2 18-17 24-15-5-17-24Z" fill="#2e211f" opacity=".9"/>
+          <path d="M111 141q8 4 15 0" fill="none" stroke="#f0d1b8" stroke-width="2.4" stroke-linecap="round" opacity=".86"/>
           <circle cx="49" cy="248" r="27" fill="url(#ball-toy)"/>
           <path d="m49 222 11 9-4 13H43l-5-12Zm-22 24 13-4 7 11-8 10-11-5m44-12-13-4-7 11 8 10 11-5M40 276l1-15h16l1 15" fill="#23332d"/>
           <path d="M48 214q7-7 14-8" stroke="#53cfd5" stroke-width="4" stroke-linecap="round" opacity=".8"/>
@@ -1735,11 +2471,13 @@
           <ellipse cx="120" cy="101" rx="60" ry="62" fill="url(#skin-warm)"/>
           <path d="M66 95q3-58 53-66 45 3 56 56-22-20-46-27-13 18-63 23Z" fill="url(#hair-gold)"/>
           <path d="M116 38q31-22 39-2-16 14-7 32" fill="none" stroke="url(#hair-gold)" stroke-width="15" stroke-linecap="round"/>
+          <path d="M80 84q39-16 82 0" fill="none" stroke="#fff2ab" stroke-width="8" stroke-linecap="round" opacity=".88"/>
           <path d="M87 98q10-7 20 0M137 98q10-7 20 0" fill="none" stroke="#654832" stroke-width="6" stroke-linecap="round"/>
           <circle cx="98" cy="105" r="4" fill="#3d5b64"/><circle cx="148" cy="105" r="4" fill="#3d5b64"/>
           <path d="m120 105-5 13 9 1" fill="none" stroke="#be7554" stroke-width="3" stroke-linecap="round"/>
           <path d="M105 128q15 7 30 0" fill="none" stroke="#9e5648" stroke-width="4" stroke-linecap="round"/>
           <path d="M96 164h48" stroke="#effcff" stroke-width="4" stroke-linecap="round" opacity=".82"/>
+          <path d="M92 182q29 16 58 0" fill="none" stroke="#ffe48c" stroke-width="6" stroke-linecap="round" opacity=".8"/>
           <path d="M82 218h77" stroke="#f9e36c" stroke-width="5" stroke-linecap="round" opacity=".9"/>
         </g>
       </symbol>
@@ -1759,6 +2497,7 @@
           <circle cx="103" cy="103" r="4" fill="#111214"/><circle cx="153" cy="103" r="4" fill="#111214"/>
           <path d="m125 104-5 13 9 1" fill="none" stroke="#4b281f" stroke-width="3" stroke-linecap="round"/>
           <path d="M108 126q16 10 32 0" fill="none" stroke="#3c1f1d" stroke-width="5" stroke-linecap="round"/>
+          <path d="M92 157 124 146 157 165" fill="none" stroke="#ffd34b" stroke-width="6" stroke-linecap="round" opacity=".78"/>
           <path d="M50 224 177 243" stroke="#ff654d" stroke-width="7" stroke-linecap="round" opacity=".75"/>
           <path d="M31 209 142 225" stroke="#ffd34b" stroke-width="4" stroke-linecap="round" opacity=".75"/>
           <path d="M15 190h78M4 208h57" stroke="#168d61" stroke-width="5" stroke-linecap="round" opacity=".5"/>
@@ -1781,6 +2520,8 @@
           <circle cx="98" cy="106" r="4" fill="#171516"/><circle cx="149" cy="106" r="4" fill="#171516"/>
           <path d="m121 106-5 13 9 1" fill="none" stroke="#78432f" stroke-width="3" stroke-linecap="round"/>
           <path d="M105 134q15 8 30 0" fill="none" stroke="#e4b696" stroke-width="4" stroke-linecap="round"/>
+          <path d="M101 137q18 16 36 0-2 19-18 24-16-4-18-24Z" fill="#2b1b19" opacity=".92"/>
+          <path d="M108 140q6 4 12 0M122 140q6 4 12 0" fill="none" stroke="#f0d7c0" stroke-width="2.4" stroke-linecap="round" opacity=".84"/>
           <path d="M62 224h112" stroke="#effff6" stroke-width="5" stroke-linecap="round" opacity=".75"/>
           <path d="M48 201q-16-15-24-35M190 202q17-14 26-33" fill="none" stroke="#f2ce4b" stroke-width="5" stroke-linecap="round" opacity=".72"/>
         </g>
@@ -1802,6 +2543,8 @@
           <circle cx="97" cy="105" r="4" fill="#171516"/><circle cx="148" cy="105" r="4" fill="#171516"/>
           <path d="m120 105-5 13 9 1" fill="none" stroke="#ad684d" stroke-width="3" stroke-linecap="round"/>
           <path d="M104 134q16 8 31 0" fill="none" stroke="#f0c2a0" stroke-width="4" stroke-linecap="round"/>
+          <path d="M102 137q18 15 35 0-2 17-18 22-15-4-17-22Z" fill="#2b211f" opacity=".48"/>
+          <path d="M56 181h23" stroke="#ffc533" stroke-width="8" stroke-linecap="round" opacity=".88"/>
           <path d="M78 218h85" stroke="#fff1dd" stroke-width="5" stroke-linecap="round" opacity=".75"/>
           <path d="M44 216 28 227M187 216l19 10" stroke="#ffca45" stroke-width="4" stroke-linecap="round" opacity=".76"/>
         </g>
@@ -1825,7 +2568,7 @@
           <p class="hero-lede">你看球的方式，藏着你在球场上的角色。终场哨响之前，找到最像你的那一位。</p>
           <div class="hero-meta"><span>赛前判断</span><span>临场反应</span><span>关键时刻</span></div>
           <button class="primary" id="startBtn" type="button">鸣哨开场 <span class="button-ball" aria-hidden="true">➜</span></button>
-          <p class="legal">本测试仅供球迷娱乐，不构成任何投注建议。答题结果默认只保存在当前浏览器，主动生成二维码时会调用第三方服务。</p>
+          <p class="legal">本测试仅供球迷娱乐，不代表真实比赛结论。答题结果默认只保存在当前浏览器，主动生成二维码时会调用第三方服务。</p>
         </div>
         <div class="lineup" aria-label="六位足球风格角色插画">
           <article class="lineup-character">
@@ -1841,7 +2584,7 @@
           <article class="lineup-character">
             <span class="lineup-badge">03</span>
             <svg viewBox="0 0 240 310"><use href="#player-power"/></svg>
-            <div class="lineup-caption"><strong>重炮先锋</strong><span>power striker</span></div>
+            <div class="lineup-caption"><strong>强攻先锋</strong><span>power forward</span></div>
           </article>
           <article class="lineup-character">
             <span class="lineup-badge">04</span>
@@ -1916,19 +2659,24 @@
           <div class="result-section wide">
             <div class="insight-grid">
               <article class="insight-item"><h3>你的强项</h3><p id="resultStrength"></p></article>
-              <article class="insight-item"><h3>容易失位</h3><p id="resultRisk"></p></article>
+              <article class="insight-item"><h3>容易跑偏</h3><p id="resultReminder"></p></article>
               <article class="insight-item"><h3>最佳搭档</h3><p id="resultPartner"></p></article>
             </div>
           </div>
           <div class="result-section wide">
             <div class="share-band">
-              <div><h3>把你的足球人格发上看台</h3><p>分享专属链接，看看朋友会踢进哪一种人生剧本。</p></div>
+              <div class="share-intro">
+                <h3>把你的足球人格发上看台</h3>
+                <p>链接打开即可直接恢复结果，聊天转发和当面扫码都会更顺手。</p>
+                <div class="share-inline-tip" aria-label="分享提示">
+                  <span>打开即还原结果</span>
+                  <span>二维码更适合当面分享</span>
+                </div>
+              </div>
               <div class="share-actions">
                 <button class="secondary" id="shareBtn" type="button">分享结果</button>
                 <button class="secondary alt" id="qrBtn" type="button">查看二维码</button>
               </div>
-              <label class="sr-only" for="shareUrl">结果链接</label>
-              <input class="share-url" id="shareUrl" type="text" readonly aria-label="可手动复制的结果链接">
             </div>
           </div>
           <div class="footer-actions wide">
@@ -1942,11 +2690,34 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="qr-modal" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrTitle" aria-hidden="true">
-    <div class="qr-panel">
-      <h3 id="qrTitle">扫码查看足球人格</h3>
-      <img id="qrImage" alt="结果二维码" width="220" height="220">
-      <p id="qrFallback" hidden>二维码暂时无法加载，请使用“分享结果”发送链接。</p>
-      <button class="close-modal" id="closeQrBtn" type="button">关闭</button>
+    <div class="qr-panel" id="qrPanel">
+      <button class="share-close" id="closeQrBtn" type="button" aria-label="关闭分享面板">关闭</button>
+      <div class="share-preview">
+        <span class="share-preview-code" id="sharePreviewCode">FAN · 01</span>
+        <h3 id="qrTitle">分享这份足球人格</h3>
+        <p class="share-preview-title" id="sharePreviewTitle">决胜终结者</p>
+        <p class="share-preview-text" id="sharePreviewText">打开链接即可直接恢复这份结果。</p>
+      </div>
+      <div class="share-switch" role="tablist" aria-label="分享方式">
+        <button class="share-switch-btn active" id="shareModeLink" type="button" role="tab" aria-selected="true" aria-controls="shareViewLink" data-mode="link">链接分享</button>
+        <button class="share-switch-btn" id="shareModeQr" type="button" role="tab" aria-selected="false" aria-controls="shareViewQr" data-mode="qr">扫码分享</button>
+      </div>
+      <section class="share-view active" id="shareViewLink" role="tabpanel" aria-labelledby="shareModeLink">
+        <label class="share-field-label" for="shareUrl">专属链接</label>
+        <input class="share-url" id="shareUrl" type="text" readonly spellcheck="false" autocapitalize="off" autocorrect="off" aria-label="可手动复制的结果链接">
+        <p class="share-helper" id="shareLinkHelper">直接发给朋友，打开链接就会恢复同一份结果页面。</p>
+      </section>
+      <section class="share-view" id="shareViewQr" role="tabpanel" aria-labelledby="shareModeQr" hidden>
+        <div class="qr-frame loading" id="qrFrame">
+          <img id="qrImage" alt="结果二维码" width="220" height="220" loading="lazy" decoding="async">
+        </div>
+        <p class="share-helper" id="qrHelper">面对面展示屏幕时，扫码进入会更自然。</p>
+        <p id="qrFallback" hidden>二维码暂时没有加载出来，可以直接复制上面的专属链接分享。</p>
+      </section>
+      <div class="share-modal-actions" id="shareModalActions">
+        <button class="secondary" id="copyLinkBtn" type="button">复制链接</button>
+        <button class="secondary alt" id="nativeShareBtn" type="button" hidden>系统分享</button>
+      </div>
     </div>
   </div>
 
@@ -1966,12 +2737,12 @@
         focus: "关键窗口一出现就收口",
         signature: "张开双臂，等最后一锤定音",
         tags: ["关键先生", "果断收割", "大场面体质"],
-        slogan: "越接近终场，你越接近自己的主场。",
+        slogan: "越接近终场，你越接近自己的高光时刻。",
         desc: "你天生相信关键时刻。信息再复杂，你也会迅速收束判断，把全部注意力放在那个最可能改变比赛的瞬间。",
-        strength: "目标感强，敢在压力最大的时候做决定。你不需要太多机会，只需要一次足够清晰的窗口。",
-        risk: "有时会把“敢出手”误当成“必须出手”。真正的终结者也懂得让并不舒服的机会从身边过去。",
+        strength: "目标感强，敢在节奏最紧的时候做决定。你不需要太多机会，只需要一次足够清晰的窗口。",
+        reminder: "有时会把“敢判断”误当成“必须判断”。真正的终结者也懂得让并不舒服的机会从身边过去。",
         partner: "中场指挥官。他能替你整理混乱、送出最后一传，让你的果断更接近高质量。",
-        traits: [["决断", 96], ["抗压", 91], ["直觉", 86], ["研究", 62]]
+        traits: [["决断", 96], ["沉稳", 91], ["直觉", 86], ["研究", 62]]
       },
       {
         key: "magician", title: "球场魔术师", code: "FAN · 02", player: "player-magician", watermark: "10",
@@ -1984,22 +2755,22 @@
         slogan: "别人看见路线，你看见路线之间的缝隙。",
         desc: "你享受破解比赛。你会留意节奏、空间和那些不写在数据表里的细节，再用一条意料之外的思路连接答案。",
         strength: "观察细腻、想象力强，擅长从局面里发现隐藏选项。越复杂的比赛，越容易激活你的创造力。",
-        risk: "太迷恋漂亮解法时，容易绕过最直接的答案。灵感需要验证，魔法也需要基本功。",
+        reminder: "太迷恋漂亮解法时，容易绕过最直接的答案。灵感需要验证，魔法也需要基本功。",
         partner: "疾速突击手。你的想法由他落地，他的冲刺也因为你的视野更有方向。",
         traits: [["创造", 97], ["洞察", 93], ["节奏", 88], ["纪律", 58]]
       },
       {
-        key: "power", title: "重炮先锋", code: "FAN · 03", player: "player-power", watermark: "09",
+        key: "power", title: "强攻先锋", code: "FAN · 03", player: "player-power", watermark: "09",
         colors: ["#77d7ff", "#fbce47", "#163349"],
-        role: "POWER STRIKER",
-        tempo: "建立优势后继续压住对手",
-        focus: "把犹豫局面直接推向结论",
-        signature: "高压前顶，用身体和力量冲开口子",
-        tags: ["强度拉满", "执行坚决", "持续施压"],
+        role: "POWER FORWARD",
+        tempo: "建立优势后继续保持主动",
+        focus: "把犹豫局面直接推向清晰结论",
+        signature: "持续前顶，用身体和力量打开空间",
+        tags: ["强度拉满", "执行坚决", "持续推进"],
         slogan: "不等比赛给答案，你习惯自己制造答案。",
-        desc: "你偏爱明确、直接、可执行的选择。只要方向成立，你会持续施压，用强度把模糊局面推向自己想要的结果。",
+        desc: "你偏爱明确、直接、可执行的选择。只要方向成立，你会持续推进，用强度把模糊局面推向清晰结论。",
         strength: "行动力和持续性都很突出。你不怕重复验证，也不怕在别人犹豫时率先建立优势。",
-        risk: "持续加力并不总能解决问题。遇到结构性变化时，停半拍观察可能比再轰一脚更有效。",
+        reminder: "持续加力并不总能解决问题。遇到结构性变化时，停半拍观察可能比继续向前更有效。",
         partner: "球场魔术师。他提供变化，你提供强度，能够让对手很难同时防住两种节奏。",
         traits: [["爆发", 98], ["执行", 92], ["韧性", 85], ["应变", 64]]
       },
@@ -2014,7 +2785,7 @@
         slogan: "机会不会停下来等人，而你总能先到一步。",
         desc: "你对变化极其敏感，擅长在信息刚出现时完成判断。比赛一旦露出空当，你会立刻提速，不给犹豫留下位置。",
         strength: "反应快、适应快，面对临场变化依然能保持攻击性。你的优势往往来自那半步领先。",
-        risk: "速度越快，越需要清楚刹车点。即时信息可能是机会，也可能只是噪音。",
+        reminder: "速度越快，越需要清楚刹车点。即时信息可能是机会，也可能只是噪音。",
         partner: "边路猎手。他会帮你拓宽空间，让你的纵向冲击拥有更多落点。",
         traits: [["速度", 99], ["应变", 94], ["胆量", 88], ["复盘", 57]]
       },
@@ -2027,9 +2798,9 @@
         signature: "从外线划开一道独立线路",
         tags: ["差异价值", "边路穿刺", "独立判断"],
         slogan: "你不挤在中心，你会从边界撕开整场比赛。",
-        desc: "你善于找到被忽略的角度。热门不一定是你的主场，小众联赛、特殊玩法和旁人跳过的细节反而更能吸引你。",
+        desc: "你善于找到被忽略的角度。高讨论度话题不一定最吸引你，陌生联赛、边路细节和旁人跳过的线索反而更能激发你的兴趣。",
         strength: "视角独立，善于寻找差异价值。你不会因为人多就自动认同，也不害怕走自己的路线。",
-        risk: "独特不等于正确。过度追求冷门与差异，可能让你离开更扎实的判断基础。",
+        reminder: "独特不等于正确。过度追求不显眼路线与差异，可能让你离开更扎实的判断基础。",
         partner: "决胜终结者。你负责创造边路机会，他负责把机会变成结果。",
         traits: [["独立", 96], ["嗅觉", 93], ["探索", 89], ["稳健", 61]]
       },
@@ -2038,42 +2809,42 @@
         colors: ["#eef1df", "#ff5145", "#38232a"],
         role: "MATCH CONTROLLER",
         tempo: "把局面重新排成有秩序的节拍",
-        focus: "先稳住结构，再决定冒险值",
+        focus: "先理顺结构，再决定变化幅度",
         signature: "一边指挥跑位，一边切换比赛节奏",
-        tags: ["全局调度", "秩序感", "风险管理"],
+        tags: ["全局调度", "秩序感", "边界意识"],
         slogan: "你不追着比赛跑，你让比赛按自己的节拍走。",
-        desc: "你习惯把信息排成秩序：赛程、数据、预算和风险都应该各就各位。你追求的不是一次惊喜，而是长期可复制的掌控感。",
+        desc: "你习惯把信息排成秩序：赛程、数据、计划和边界都应该各就各位。你追求的不是一次惊喜，而是长期可复制的掌控感。",
         strength: "全局意识和纪律性出色。你能在情绪高涨时守住计划，也能把复杂问题拆成清晰步骤。",
-        risk: "过度控制会错过偶然出现的灵感。计划可以保护你，但不必把每一次即兴都挡在门外。",
-        partner: "重炮先锋。你的调度让他的力量用在正确位置，他的执行让你的计划迅速兑现。",
-        traits: [["掌控", 98], ["纪律", 96], ["全局", 92], ["冒险", 48]]
+        reminder: "过度控制会错过偶然出现的灵感。计划可以保护你，但不必把每一次即兴都挡在门外。",
+        partner: "强攻先锋。你的调度让他的力量用在正确位置，他的执行让你的计划迅速兑现。",
+        traits: [["掌控", 98], ["纪律", 96], ["全局", 92], ["活力", 48]]
       }
     ];
 
     const questions = [
       { text: "离开赛还有一小时，你最先关注什么？", options: [
-        ["首发与伤停，寻找最直接的胜负线索", 0, 5], ["两队站位，猜想比赛会怎样被破解", 1, 5], ["身体与对抗数据，看谁能把强度拉满", 2, 0], ["临场消息和赔率跳动，等第一处空当", 3, 4]
+        ["首发与伤停，寻找最直接的比赛线索", 0, 5], ["两队站位，猜想比赛会怎样被破解", 1, 5], ["身体与对抗数据，看谁能把强度拉满", 2, 0], ["临场消息和支持率变化，等第一处空当", 3, 4]
       ]},
       { text: "一场焦点战陷入僵局，你更相信什么会破局？", options: [
-        ["巨星在禁区里的一次果断处理", 0, 2], ["一脚没人想到的穿透传球", 1, 5], ["持续压迫，把防线硬生生推回去", 2, 3], ["边路突然提速后的反击", 4, 3]
+        ["巨星在禁区里的一次果断处理", 0, 2], ["一脚没人想到的穿透传球", 1, 5], ["持续推进，把防线硬生生推回去", 2, 3], ["边路突然提速后的反击", 4, 3]
       ]},
-      { text: "朋友在群里说“这场稳了”，你会怎么接？", options: [
+      { text: "朋友在群里说“这场很有把握”，你会怎么接？", options: [
         ["问清依据，再给出自己的结论", 5, 0], ["顺着聊战术，找找有没有不同解法", 4, 1], ["氛围到了就果断参与", 3, 2], ["先看有没有被大家忽略的另一场", 4, 3]
       ]},
       { text: "你最享受哪一种比赛走势？", options: [
-        ["90 分钟前仍悬而未决的强强对话", 0, 5], ["双方不断变阵、互相拆招", 1, 5], ["高对抗、高强度、持续对轰", 2, 3], ["空间拉开后连续出现高速反击", 3, 4]
+        ["90 分钟前仍悬而未决的强强对话", 0, 5], ["双方不断变阵、互相拆招", 1, 5], ["节奏拉满、攻守往返的焦点战", 2, 3], ["空间拉开后连续出现高速反击", 3, 4]
       ]},
       { text: "临场信息突然反转，你第一反应是？", options: [
-        ["快速重算，能出手就不拖", 3, 0], ["判断它会怎样改变场上空间", 1, 4], ["回到预设规则，确认是否需要调整", 5, 2], ["观察市场是不是集体挤向同一边", 4, 3]
+        ["快速重算，能判断就不拖", 3, 0], ["判断它会怎样改变场上空间", 1, 4], ["回到预设规则，确认是否需要调整", 5, 2], ["观察支持率是否集体偏向同一边", 4, 3]
       ]},
       { text: "你心里的“好判断”更接近哪一种？", options: [
         ["在关键节点给出明确答案", 0, 3], ["过程有创造性，也能自圆其说", 1, 4], ["简单、直接，而且可以马上执行", 2, 0], ["长期重复依然保持稳定", 5, 2]
       ]},
       { text: "连续三次判断失准后，你更可能？", options: [
-        ["暂停，把全部过程重新排一遍", 5, 1], ["降低力度，但保留下一次出手机会", 3, 0], ["换个赛道，寻找新的突破口", 4, 3], ["用更强的信息密度尽快找回节奏", 3, 2]
+        ["暂停，把全部过程重新排一遍", 5, 1], ["降低节奏，但保留下一次判断机会", 3, 0], ["换个赛道，寻找新的突破口", 4, 3], ["用更强的信息密度尽快找回节奏", 3, 2]
       ]},
       { text: "选择一场陌生联赛时，你最看重什么？", options: [
-        ["有没有明确的关键球员和终结点", 0, 2], ["球队风格是否足够有研究价值", 5, 1], ["节奏够不够快，临场反馈够不够多", 3, 4], ["主流视线之外有没有价格差", 4, 1]
+        ["有没有明确的关键球员和终结点", 0, 2], ["球队风格是否足够有研究价值", 5, 1], ["节奏够不够快，临场反馈够不够多", 3, 4], ["主流视线之外有没有被忽略的角度", 4, 1]
       ]},
       { text: "赛前十分钟，你会推翻原来的决定吗？", options: [
         ["只要新信息足够关键，就会", 3, 0], ["通常不会，除非触发预设条件", 5, 2], ["会，但更相信自己的比赛感觉", 1, 0], ["看人群方向，必要时走另一条边", 4, 3]
@@ -2081,20 +2852,20 @@
       { text: "猜中一次极难的结果，你最想做什么？", options: [
         ["享受这个绝杀般的瞬间", 0, 2], ["复盘自己是怎样看见那条路径的", 5, 1], ["把有效方法放大，再验证一次", 2, 5], ["记录下来，但不改变后续节奏", 5, 4]
       ]},
-      { text: "面对所有人都在讨论的热门选择，你会？", options: [
+      { text: "面对所有人都在讨论的高关注选择，你会？", options: [
         ["如果逻辑成立，就正面迎上", 2, 0], ["寻找它背后更精细的变化", 4, 1], ["等最后时刻再捕捉方向", 3, 0], ["优先检查被忽略的反面机会", 4, 1]
       ]},
       { text: "看球时，什么最容易让你进入状态？", options: [
-        ["关键球员拿球时全场屏息", 0, 1], ["连续精妙配合把防线拆开", 1, 5], ["高位逼抢把气氛瞬间点燃", 2, 3], ["快速推进让镜头都追不上", 3, 4]
+        ["关键球员拿球时全场屏息", 0, 1], ["连续精妙配合把防线拆开", 1, 5], ["前场积极回收球权，把气氛瞬间点燃", 2, 3], ["快速推进让镜头都追不上", 3, 4]
       ]},
       { text: "如果组建自己的分析体系，你会先搭什么？", options: [
-        ["关键事件与终结效率模型", 0, 2], ["空间、传球和比赛节奏图", 1, 5], ["对抗强度与边路推进指标", 2, 4], ["预算、仓位与复盘纪律", 5, 4]
+        ["关键事件与终结效率模型", 0, 2], ["空间、传球和比赛节奏图", 1, 5], ["对抗强度与边路推进指标", 2, 4], ["计划安排与复盘纪律", 5, 4]
       ]},
       { text: "赛后你最愿意反复看哪一类内容？", options: [
-        ["决定胜负的最后一击", 0, 2], ["改变局面的战术细节", 1, 5], ["比赛强度和压迫数据", 2, 3], ["冷门形成前的蛛丝马迹", 4, 1]
+        ["决定比赛走向的最后一击", 0, 2], ["改变局面的战术细节", 1, 5], ["比赛强度与跑动数据", 2, 3], ["不显眼路线形成前的蛛丝马迹", 4, 1]
       ]},
       { text: "如果你是教练，最后五分钟会怎么布置？", options: [
-        ["把球交给最能决定比赛的人", 0, 1], ["用一次换位制造全新路线", 1, 5], ["继续加压，用力量冲开缺口", 2, 0], ["保持阵型，让每个人按计划执行", 5, 4]
+        ["把球交给最能决定比赛的人", 0, 1], ["用一次换位制造全新路线", 1, 5], ["继续推进，用力量打开缺口", 2, 0], ["保持阵型，让每个人按计划执行", 5, 4]
       ]}
     ];
 
@@ -2103,6 +2874,7 @@
     let answers = [];
     let toastTimer = 0;
     let previousFocus = null;
+    let activeShareMode = "link";
 
     function showScreen(id) {
       document.querySelectorAll(".screen").forEach((screen) => screen.classList.toggle("active", screen.id === id));
@@ -2121,7 +2893,14 @@
       return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
     }
 
+    function encodeCompactAnswers(value) {
+      return value.join("");
+    }
+
     function decodePayload(payload) {
+      if (/^[0-3]{15}$/.test(payload)) {
+        return { a: [...payload].map((character) => Number(character)), v: 4 };
+      }
       const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
       const padded = normalized.padEnd(normalized.length + (4 - normalized.length % 4) % 4, "=");
       const bytes = Uint8Array.from(atob(padded), (character) => character.charCodeAt(0));
@@ -2129,7 +2908,113 @@
     }
 
     function shareUrl() {
-      return `${location.href.split("#")[0]}#r=${encodePayload({ a: answers, v: 3 })}`;
+      const url = new URL(location.href);
+      url.hash = "";
+      url.search = "";
+      url.hash = `r=${encodeCompactAnswers(answers)}`;
+      return url.toString();
+    }
+
+    function isLocalFilePreview() {
+      return location.protocol === "file:";
+    }
+
+    function hasNativeShare() {
+      if (!window.isSecureContext || typeof navigator.share !== "function") return false;
+      if (typeof navigator.canShare !== "function") return true;
+      try {
+        const meta = getShareMeta();
+        return navigator.canShare({ title: meta.title, text: meta.text, url: meta.url });
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function hasClipboardWrite() {
+      return window.isSecureContext && navigator.clipboard && typeof navigator.clipboard.writeText === "function";
+    }
+
+    function getShareMeta(profileOverride = null) {
+      const profile = profileOverride || scoreAnswers().profile;
+      return {
+        profile,
+        url: shareUrl(),
+        title: `我的足球人格：${profile.title}`,
+        text: `${profile.slogan} 打开链接即可直接恢复这份结果。`
+      };
+    }
+
+    function getSharePanelNotes(meta) {
+      if (isLocalFilePreview()) {
+        return {
+          preview: `${meta.profile.slogan} 当前是本地预览，正式发布后这里会自动变成可对外分享的链接。`,
+          link: "现在展示的是本地预览地址，方便先检查分享样式；正式发布后会自动换成正式网页链接。",
+          qr: "当前二维码主要用于检查版式效果，正式发布后扫码就能直接打开同一份结果页。",
+          fallback: "二维码暂时没有加载出来。当前是本地预览，你也可以继续检查链接分享样式。"
+        };
+      }
+      return {
+        preview: meta.text,
+        link: hasClipboardWrite()
+          ? "复制后发给朋友，打开链接就会恢复同一份结果页面。"
+          : "如果浏览器暂时不能直接写入剪贴板，点“复制链接”后会自动选中这条链接。",
+        qr: "面对面展示屏幕时，扫码进入会更自然。",
+        fallback: "二维码暂时没有加载出来，可以直接复制上面的专属链接分享。"
+      };
+    }
+
+    function syncSharePanel(profile) {
+      const meta = getShareMeta(profile);
+      const notes = getSharePanelNotes(meta);
+      $("sharePreviewCode").textContent = meta.profile.code;
+      $("sharePreviewTitle").textContent = meta.profile.title;
+      $("sharePreviewText").textContent = notes.preview;
+      $("shareUrl").value = meta.url;
+      $("shareLinkHelper").textContent = notes.link;
+      $("qrHelper").textContent = notes.qr;
+      $("qrFallback").textContent = notes.fallback;
+      $("qrImage").alt = `${meta.profile.title} 分享二维码`;
+      const nativeSupported = hasNativeShare();
+      $("nativeShareBtn").hidden = !nativeSupported;
+      $("shareModalActions").dataset.layout = nativeSupported ? "dual" : "single";
+    }
+
+    function setShareMode(mode) {
+      activeShareMode = mode === "qr" ? "qr" : "link";
+      const isQr = activeShareMode === "qr";
+      $("shareModeLink").setAttribute("aria-selected", String(!isQr));
+      $("shareModeQr").setAttribute("aria-selected", String(isQr));
+      $("shareModeLink").classList.toggle("active", !isQr);
+      $("shareModeQr").classList.toggle("active", isQr);
+      $("shareViewLink").hidden = isQr;
+      $("shareViewQr").hidden = !isQr;
+      $("shareViewLink").classList.toggle("active", !isQr);
+      $("shareViewQr").classList.toggle("active", isQr);
+      if (isQr) loadQrCode();
+    }
+
+    function loadQrCode() {
+      const url = $("shareUrl").value || shareUrl();
+      if (!url) return;
+      if ($("qrImage").dataset.url === url && $("qrImage").getAttribute("src")) return;
+      $("qrFrame").classList.add("loading");
+      $("qrFallback").hidden = true;
+      $("qrImage").dataset.url = url;
+      $("qrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=12&data=${encodeURIComponent(url)}`;
+    }
+
+    function openSharePanel(mode = "link") {
+      if (!isValidAnswers(answers)) {
+        toast("暂无可分享的结果");
+        return;
+      }
+      previousFocus = document.activeElement;
+      syncSharePanel(scoreAnswers().profile);
+      setShareMode(mode);
+      $("qrModal").classList.add("show");
+      $("qrModal").setAttribute("aria-hidden", "false");
+      const focusTarget = mode === "qr" ? $("shareModeQr") : $("copyLinkBtn");
+      focusTarget.focus({ preventScroll: true });
     }
 
     function safeStorageSet(value) {
@@ -2146,6 +3031,18 @@
       $("toast").classList.add("show");
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => $("toast").classList.remove("show"), 2200);
+    }
+
+    function highlightShareUrl() {
+      const input = $("shareUrl");
+      if (!input.value) return;
+      input.select();
+      if (input.setSelectionRange) input.setSelectionRange(0, input.value.length);
+    }
+
+    function focusShareUrl() {
+      $("shareUrl").focus({ preventScroll: true });
+      highlightShareUrl();
     }
 
     function scoreAnswers() {
@@ -2243,10 +3140,9 @@
       $("resultSignature").textContent = profile.signature;
       $("resultDesc").textContent = profile.desc;
       $("resultStrength").textContent = profile.strength;
-      $("resultRisk").textContent = profile.risk;
+      $("resultReminder").textContent = profile.reminder;
       $("resultPartner").textContent = profile.partner;
-      $("shareUrl").value = shareUrl();
-      $("shareUrl").classList.remove("show");
+      syncSharePanel(profile);
       $("restoreNote").hidden = !restored;
       $("restoreNote").textContent = restored ? "已从朋友分享的链接恢复这份结果。" : "";
       renderTraits(profile.traits);
@@ -2267,72 +3163,300 @@
       return true;
     }
 
-    function showManualShare(url) {
-      $("shareUrl").value = url;
-      $("shareUrl").classList.add("show");
-      $("shareUrl").focus();
-      $("shareUrl").select();
-      toast("请手动复制下方结果链接");
-    }
-
-    async function shareResult() {
-      const url = shareUrl();
-      const profile = scoreAnswers().profile;
-      if (navigator.share) {
-        try {
-          await navigator.share({ title: `我的足球人格：${profile.title}`, text: profile.slogan, url });
-          return;
-        } catch (error) {
-          if (error && error.name === "AbortError") return;
-        }
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+    async function copyShareLink() {
+      const { url } = getShareMeta();
+      if (hasClipboardWrite()) {
         try {
           await navigator.clipboard.writeText(url);
           toast("结果链接已复制");
           return;
         } catch (error) {
-          showManualShare(url);
-          return;
+          // Fall through to manual selection.
         }
       }
-      showManualShare(url);
+      if (activeShareMode !== "link") {
+        setShareMode("link");
+      }
+      focusShareUrl();
+      toast("链接已选中，请手动复制");
+    }
+
+    async function triggerNativeShare() {
+      const meta = getShareMeta();
+      if (!hasNativeShare()) return "unsupported";
+      try {
+        await navigator.share({ title: meta.title, text: meta.text, url: meta.url });
+        return "shared";
+      } catch (error) {
+        if (error && error.name === "AbortError") return "cancelled";
+        return "fallback";
+      }
+    }
+
+    async function shareResult() {
+      const result = await triggerNativeShare();
+      if (result === "shared" || result === "cancelled") return;
+      openSharePanel("link");
     }
 
     function openQr() {
-      previousFocus = document.activeElement;
-      $("qrFallback").hidden = true;
-      $("qrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=12&data=${encodeURIComponent(shareUrl())}`;
-      $("qrModal").classList.add("show");
-      $("qrModal").setAttribute("aria-hidden", "false");
-      $("closeQrBtn").focus({ preventScroll: true });
+      openSharePanel("qr");
     }
 
     function closeQr() {
       $("qrModal").classList.remove("show");
       $("qrModal").setAttribute("aria-hidden", "true");
+      setShareMode("link");
+      $("qrFrame").classList.add("loading");
       $("qrImage").removeAttribute("src");
+      $("qrImage").dataset.url = "";
       $("qrFallback").hidden = true;
-      (previousFocus || $("qrBtn")).focus({ preventScroll: true });
+      (previousFocus || $("shareBtn")).focus({ preventScroll: true });
       previousFocus = null;
     }
 
-    function exportAnswers() {
+    function createRoundedRect(ctx, x, y, width, height, radius) {
+      const value = Math.min(radius, width / 2, height / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + value, y);
+      ctx.arcTo(x + width, y, x + width, y + height, value);
+      ctx.arcTo(x + width, y + height, x, y + height, value);
+      ctx.arcTo(x, y + height, x, y, value);
+      ctx.arcTo(x, y, x + width, y, value);
+      ctx.closePath();
+    }
+
+    function fillRoundedRect(ctx, x, y, width, height, radius, color) {
+      ctx.save();
+      createRoundedRect(ctx, x, y, width, height, radius);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines = Infinity) {
+      const characters = [...text];
+      let line = "";
+      let lineCount = 0;
+
+      for (let index = 0; index < characters.length; index += 1) {
+        const candidate = line + characters[index];
+        if (ctx.measureText(candidate).width > maxWidth && line) {
+          lineCount += 1;
+          const isLastLine = lineCount >= maxLines;
+          ctx.fillText(isLastLine ? `${line.slice(0, Math.max(0, line.length - 1))}…` : line, x, y);
+          if (isLastLine) return y;
+          y += lineHeight;
+          line = characters[index];
+          continue;
+        }
+        line = candidate;
+      }
+
+      if (line) {
+        ctx.fillText(line, x, y);
+      }
+      return y;
+    }
+
+    function drawPill(ctx, text, x, y, background, color) {
+      ctx.save();
+      ctx.font = "700 28px 'PingFang SC','Microsoft YaHei',sans-serif";
+      const width = ctx.measureText(text).width + 54;
+      fillRoundedRect(ctx, x, y, width, 52, 26, background);
+      ctx.fillStyle = color;
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, x + 27, y + 26);
+      ctx.restore();
+      return width;
+    }
+
+    function loadPlayerSvg(profile) {
+      const defs = document.querySelector(".sprite-bank defs");
+      const symbol = document.getElementById(profile.player);
+      if (!defs || !symbol) return Promise.reject(new Error("player asset missing"));
+      const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 310"><defs>${defs.innerHTML}</defs>${symbol.innerHTML}</svg>`;
+      const blob = new Blob([svgMarkup], { type: "image/svg+xml;charset=utf-8" });
+      const objectUrl = URL.createObjectURL(blob);
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+          resolve(image);
+        };
+        image.onerror = (error) => {
+          URL.revokeObjectURL(objectUrl);
+          reject(error);
+        };
+        image.src = objectUrl;
+      });
+    }
+
+    function canvasToBlob(canvas, type, quality) {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            resolve(blob);
+            return;
+          }
+          reject(new Error("blob unavailable"));
+        }, type, quality);
+      });
+    }
+
+    async function exportAnswers(format = "png") {
       if (!isValidAnswers(answers)) {
-        toast("暂无完整答题数据");
+        toast("暂无完整结果海报");
         return;
       }
-      const result = scoreAnswers();
-      const payload = { version: 3, answers: [...answers], scores: result.scores, profile: result.profile.key, profileTitle: result.profile.title, at: new Date().toISOString() };
-      const objectUrl = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
-      const link = document.createElement("a");
-      link.href = objectUrl;
-      link.download = "football-persona-result.json";
-      document.body.append(link);
-      link.click();
-      link.remove();
-      setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
-      toast("答题数据已导出");
+      const { profile } = scoreAnswers();
+      const [theme, theme2, resultBg] = profile.colors;
+      const isJpg = format === "jpg";
+      const mimeType = isJpg ? "image/jpeg" : "image/png";
+      const extension = isJpg ? "jpg" : "png";
+
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = 1080;
+        canvas.height = 1440;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("canvas unavailable");
+
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, "#f7fbf7");
+        gradient.addColorStop(.42, resultBg);
+        gradient.addColorStop(1, "#ffffff");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "rgba(7,138,73,.05)";
+        ctx.fillRect(canvas.width / 2 - 2, 0, 4, canvas.height);
+
+        ctx.save();
+        ctx.translate(160, 100);
+        ctx.rotate(-.08);
+        ctx.fillStyle = "rgba(255,255,255,.9)";
+        fillRoundedRect(ctx, 0, 0, 760, 980, 46, "rgba(255,255,255,.92)");
+        ctx.restore();
+
+        fillRoundedRect(ctx, 78, 78, 924, 1260, 42, "rgba(255,255,255,.94)");
+
+        const heroGradient = ctx.createLinearGradient(78, 78, 1002, 620);
+        heroGradient.addColorStop(0, resultBg);
+        heroGradient.addColorStop(.68, "#ffffff");
+        heroGradient.addColorStop(1, "#f3f7f4");
+        ctx.save();
+        createRoundedRect(ctx, 78, 78, 924, 560, 42);
+        ctx.clip();
+        ctx.fillStyle = heroGradient;
+        ctx.fillRect(78, 78, 924, 560);
+
+        ctx.strokeStyle = "rgba(16,37,26,.08)";
+        ctx.lineWidth = 22;
+        ctx.beginPath();
+        ctx.arc(800, 288, 220, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = `${theme}22`;
+        for (let index = -2; index < 8; index += 1) {
+          ctx.fillRect(120 + index * 130, 360 + (index % 2) * 16, 96, 340);
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.font = "900 170px 'DIN Condensed','Avenir Next Condensed','PingFang SC',sans-serif";
+        ctx.fillStyle = "rgba(16,37,26,.08)";
+        ctx.fillText(profile.watermark, 110, 260);
+        ctx.restore();
+
+        fillRoundedRect(ctx, 132, 148, 158, 62, 18, "#10251a");
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 30px 'DIN Alternate','PingFang SC',sans-serif";
+        ctx.textBaseline = "middle";
+        ctx.fillText(profile.code, 160, 179);
+
+        drawPill(ctx, profile.role, 312, 148, "rgba(255,255,255,.88)", "#294437");
+
+        ctx.fillStyle = "#10251a";
+        ctx.font = "900 92px 'DIN Condensed','Avenir Next Condensed','PingFang SC',sans-serif";
+        ctx.textBaseline = "top";
+        wrapText(ctx, profile.title, 132, 242, 520, 82, 2);
+
+        ctx.fillStyle = "#496050";
+        ctx.font = "500 30px 'PingFang SC','Microsoft YaHei',sans-serif";
+        wrapText(ctx, profile.slogan, 132, 436, 470, 44, 3);
+
+        let tagX = 132;
+        const tagY = 570;
+        profile.tags.forEach((tag, index) => {
+          const pillWidth = drawPill(ctx, tag, tagX, tagY, "rgba(255,255,255,.92)", "#244234");
+          tagX += pillWidth + 12;
+          if (index === 1 && tagX > 700) tagX = 132;
+        });
+
+        const playerImage = await loadPlayerSvg(profile);
+        ctx.drawImage(playerImage, 630, 132, 290, 375);
+
+        fillRoundedRect(ctx, 132, 696, 816, 84, 24, "#10251a");
+        ctx.fillStyle = "#c9f43b";
+        ctx.font = "900 24px 'DIN Alternate','PingFang SC',sans-serif";
+        ctx.textBaseline = "top";
+        ctx.fillText("YOUR MATCH DNA", 164, 722);
+
+        ctx.fillStyle = "#203327";
+        ctx.font = "600 34px 'PingFang SC','Microsoft YaHei',sans-serif";
+        wrapText(ctx, profile.desc, 132, 820, 814, 52, 4);
+
+        const hudItems = [
+          ["比赛气质", profile.tempo],
+          ["核心触发", profile.focus],
+          ["代表画面", profile.signature]
+        ];
+        hudItems.forEach(([label, value], index) => {
+          const boxX = 132 + (index % 2) * 408;
+          const boxY = 1034 + Math.floor(index / 2) * 136;
+          const boxWidth = index === 2 ? 816 : 396;
+          fillRoundedRect(ctx, boxX, boxY, boxWidth, 112, 22, "#f5f8f5");
+          ctx.fillStyle = "#6f8074";
+          ctx.font = "700 22px 'PingFang SC','Microsoft YaHei',sans-serif";
+          ctx.fillText(label, boxX + 24, boxY + 26);
+          ctx.fillStyle = "#10251a";
+          ctx.font = "700 28px 'PingFang SC','Microsoft YaHei',sans-serif";
+          wrapText(ctx, value, boxX + 24, boxY + 56, boxWidth - 48, 38, index === 2 ? 2 : 1);
+        });
+
+        const traitStartY = 1208;
+        profile.traits.forEach(([name, value], index) => {
+          const boxX = 132 + (index % 2) * 408;
+          const boxY = traitStartY + Math.floor(index / 2) * 82;
+          fillRoundedRect(ctx, boxX, boxY, 396, 68, 20, "#ffffff");
+          ctx.fillStyle = "#51645a";
+          ctx.font = "700 24px 'PingFang SC','Microsoft YaHei',sans-serif";
+          ctx.fillText(name, boxX + 22, boxY + 28);
+          fillRoundedRect(ctx, boxX + 22, boxY + 40, 282, 10, 5, "#dfe7e1");
+          fillRoundedRect(ctx, boxX + 22, boxY + 40, 282 * (value / 100), 10, 5, index % 2 === 0 ? theme : theme2);
+          ctx.fillStyle = "#078a49";
+          ctx.font = "900 24px 'DIN Alternate','PingFang SC',sans-serif";
+          ctx.fillText(String(value), boxX + 322, boxY + 28);
+        });
+
+        ctx.fillStyle = "#678072";
+        ctx.font = "500 20px 'PingFang SC','Microsoft YaHei',sans-serif";
+        ctx.fillText("球迷人格 · 2026  本图由本地页面自动生成", 132, 1378);
+
+        const blob = await canvasToBlob(canvas, mimeType, isJpg ? 0.92 : undefined);
+        const objectUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = objectUrl;
+        link.download = `football-persona-${profile.key}.${extension}`;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+        toast("答题数据海报已下载");
+      } catch (error) {
+        toast("下载海报失败，请稍后重试");
+      }
     }
 
     $("startBtn").addEventListener("click", startTest);
@@ -2366,19 +3490,32 @@
     $("restartBtn").addEventListener("click", startTest);
     $("shareBtn").addEventListener("click", shareResult);
     $("qrBtn").addEventListener("click", openQr);
+    $("shareModeLink").addEventListener("click", () => setShareMode("link"));
+    $("shareModeQr").addEventListener("click", () => setShareMode("qr"));
+    $("copyLinkBtn").addEventListener("click", copyShareLink);
+    $("shareUrl").addEventListener("focus", highlightShareUrl);
+    $("shareUrl").addEventListener("click", highlightShareUrl);
+    $("nativeShareBtn").addEventListener("click", async () => {
+      const result = await triggerNativeShare();
+      if (result === "shared") closeQr();
+      if (result === "fallback") toast("系统分享暂不可用，请复制链接");
+    });
     $("closeQrBtn").addEventListener("click", closeQr);
     $("qrModal").addEventListener("click", (event) => { if (event.target === $("qrModal")) closeQr(); });
-    $("qrImage").addEventListener("error", () => { $("qrFallback").hidden = false; });
-    $("exportBtn").addEventListener("click", exportAnswers);
+    $("qrImage").addEventListener("load", () => {
+      $("qrFrame").classList.remove("loading");
+      $("qrFallback").hidden = true;
+    });
+    $("qrImage").addEventListener("error", () => {
+      $("qrFrame").classList.remove("loading");
+      $("qrFallback").hidden = false;
+    });
+    $("exportBtn").addEventListener("click", () => exportAnswers("png"));
     document.addEventListener("keydown", (event) => {
       if (!$("qrModal").classList.contains("show")) return;
       if (event.key === "Escape") {
         event.preventDefault();
         closeQr();
-      }
-      if (event.key === "Tab") {
-        event.preventDefault();
-        $("closeQrBtn").focus();
       }
     });
 
