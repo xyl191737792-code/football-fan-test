@@ -669,6 +669,66 @@
     .qr-panel img { display: block; width: 220px; max-width: 100%; height: auto; aspect-ratio: 1; margin: auto; background: #fff; }
     .qr-panel p { color: #5d685f; font-size: 11px; line-height: 1.6; }
     .close-modal { min-height: 42px; margin-top: 13px; padding: 0 25px; border-radius: 3px; background: var(--ink); color: #fff; font-size: 12px; font-weight: 900; }
+    .export-modal {
+      position: fixed;
+      z-index: 26;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: calc(16px + var(--safe-top)) calc(16px + var(--safe-right)) calc(16px + var(--safe-bottom)) calc(16px + var(--safe-left));
+      background: rgba(2, 8, 5, .84);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .export-modal.show { display: grid; animation: fade-in .2s both; }
+    .export-panel {
+      position: relative;
+      display: grid;
+      gap: 14px;
+      width: min(100%, 420px);
+      max-height: 100%;
+      overflow: auto;
+      padding: 20px;
+      border: 1px solid rgba(16, 37, 26, .08);
+      border-radius: 24px;
+      background: linear-gradient(180deg, #fff, #f3f7f4);
+      color: var(--ink);
+      box-shadow: 0 28px 54px rgba(19, 74, 42, .22);
+    }
+    .export-close {
+      position: absolute;
+      z-index: 1;
+      top: 14px;
+      right: 14px;
+      min-height: 32px;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: rgba(16, 37, 26, .08);
+      color: #294437;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .export-heading { display: grid; gap: 6px; padding-right: 56px; }
+    .export-heading span { color: #078a49; font-size: 10px; font-weight: 900; letter-spacing: .13em; }
+    .export-heading h2 { margin: 0; color: #10251a; font-size: 22px; line-height: 1.1; }
+    .export-heading p { margin: 0; color: #5c7367; font-size: 12px; line-height: 1.55; }
+    .export-image-frame {
+      display: grid;
+      min-height: 250px;
+      place-items: center;
+      padding: 10px;
+      border: 1px solid #dfe7e1;
+      border-radius: 18px;
+      background: #eaf2ec;
+    }
+    .export-image-frame img { display: block; width: min(100%, 270px); height: auto; max-height: 58vh; object-fit: contain; border-radius: 8px; box-shadow: 0 12px 26px rgba(16, 54, 31, .16); -webkit-touch-callout: default; }
+    .export-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .export-actions .secondary { min-height: 44px; }
+    @media (max-width: 480px) {
+      .export-panel { width: min(100%, 360px); padding: 16px; border-radius: 20px; }
+      .export-image-frame { min-height: 210px; }
+      .export-image-frame img { width: min(100%, 230px); max-height: 52vh; }
+    }
     noscript { display: block; margin: 30px; padding: 15px; background: #fff0ea; color: #8d2819; }
 
     @keyframes scene-in { from { opacity: 0; transform: translateY(14px) scale(.99); } to { opacity: 1; transform: none; } }
@@ -2750,6 +2810,22 @@
     </div>
   </div>
 
+  <div class="export-modal" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="exportTitle" aria-hidden="true">
+    <div class="export-panel">
+      <button class="export-close" id="closeExportBtn" type="button" aria-label="关闭答题海报预览">关闭</button>
+      <div class="export-heading">
+        <span>RESULT POSTER</span>
+        <h2 id="exportTitle">答题结果海报</h2>
+        <p id="exportHelper">长按图片即可保存到相册。</p>
+      </div>
+      <div class="export-image-frame"><img id="exportImage" alt="答题结果海报预览"></div>
+      <div class="export-actions">
+        <button class="secondary" id="saveExportBtn" type="button" hidden>保存图片</button>
+        <button class="secondary alt" id="dismissExportBtn" type="button">返回结果页</button>
+      </div>
+    </div>
+  </div>
+
   <noscript>请开启 JavaScript 后进行足球人格测试。</noscript>
 
   <script>
@@ -2904,6 +2980,8 @@
     let toastTimer = 0;
     let previousFocus = null;
     let activeShareMode = "link";
+    let exportInProgress = false;
+    let exportPreviousFocus = null;
 
     function showScreen(id) {
       document.querySelectorAll(".screen").forEach((screen) => screen.classList.toggle("active", screen.id === id));
@@ -3249,6 +3327,34 @@
       previousFocus = null;
     }
 
+    function shouldPreviewExport() {
+      const userAgent = navigator.userAgent || "";
+      const knownApp = /dongqiudi|dqd|com\.dongqiudi|懂球帝|micromessenger|wechat|qqbrowser|alipayclient|dingtalk|weibo|toutiao|douyin|bytedance/i.test(userAgent);
+      const androidWebView = /;\s*wv\)|\bwv\b/i.test(userAgent);
+      const iosWebView = /iphone|ipad|ipod/i.test(userAgent) && /applewebkit/i.test(userAgent) && !/safari/i.test(userAgent);
+      const mobileDevice = /android|iphone|ipad|ipod|mobile/i.test(userAgent) || navigator.maxTouchPoints > 0;
+      const compactViewport = window.innerWidth <= 768;
+      return knownApp || androidWebView || iosWebView || mobileDevice || compactViewport;
+    }
+
+    function closeExportPreview() {
+      $("exportModal").classList.remove("show");
+      $("exportModal").setAttribute("aria-hidden", "true");
+      $("exportImage").removeAttribute("src");
+      (exportPreviousFocus || $("exportBtn")).focus({ preventScroll: true });
+      exportPreviousFocus = null;
+    }
+
+    function showExportPreview(dataUrl, profile) {
+      $("exportImage").src = dataUrl;
+      $("exportImage").alt = `${profile.title}答题结果海报预览`;
+      $("exportHelper").textContent = "长按图片即可保存到相册。";
+      exportPreviousFocus = document.activeElement;
+      $("exportModal").classList.add("show");
+      $("exportModal").setAttribute("aria-hidden", "false");
+      $("closeExportBtn").focus({ preventScroll: true });
+    }
+
     function createRoundedRect(ctx, x, y, width, height, radius) {
       const value = Math.min(radius, width / 2, height / 2);
       ctx.beginPath();
@@ -3343,6 +3449,8 @@
         toast("暂无完整结果海报");
         return;
       }
+      if (exportInProgress) return;
+      exportInProgress = true;
       const { profile } = scoreAnswers();
       const [theme, theme2, resultBg] = profile.colors;
       const isJpg = format === "jpg";
@@ -3478,6 +3586,12 @@
         ctx.font = "500 20px 'PingFang SC','Microsoft YaHei',sans-serif";
         ctx.fillText("球迷人格 · 2026  本图由本地页面自动生成", 132, 1378);
 
+        if (shouldPreviewExport()) {
+          const imageDataUrl = canvas.toDataURL(mimeType, isJpg ? 0.92 : undefined);
+          showExportPreview(imageDataUrl, profile);
+          toast("海报已生成，长按图片保存");
+          return;
+        }
         const blob = await canvasToBlob(canvas, mimeType, isJpg ? 0.92 : undefined);
         const objectUrl = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -3489,7 +3603,9 @@
         setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
         toast("答题数据海报已下载");
       } catch (error) {
-        toast("下载海报失败，请稍后重试");
+        toast("生成海报失败，请稍后重试");
+      } finally {
+        exportInProgress = false;
       }
     }
 
@@ -3535,11 +3651,17 @@
       $("qrFallback").hidden = false;
     });
     $("exportBtn").addEventListener("click", () => exportAnswers("png"));
+    $("closeExportBtn").addEventListener("click", closeExportPreview);
+    $("dismissExportBtn").addEventListener("click", closeExportPreview);
+    $("exportModal").addEventListener("click", (event) => { if (event.target === $("exportModal")) closeExportPreview(); });
     document.addEventListener("keydown", (event) => {
-      if (!$("qrModal").classList.contains("show")) return;
       if (event.key === "Escape") {
         event.preventDefault();
-        closeQr();
+        if ($("exportModal").classList.contains("show")) {
+          closeExportPreview();
+        } else if ($("qrModal").classList.contains("show")) {
+          closeQr();
+        }
       }
     });
 
