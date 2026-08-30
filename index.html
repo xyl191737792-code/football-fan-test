@@ -686,7 +686,7 @@
       display: grid;
       gap: 14px;
       width: min(100%, 420px);
-      max-height: 100%;
+      max-height: min(100%, 900px);
       overflow: auto;
       padding: 20px;
       border: 1px solid rgba(16, 37, 26, .08);
@@ -715,19 +715,23 @@
     .export-image-frame {
       display: grid;
       min-height: 250px;
+      max-height: min(68vh, 650px);
       place-items: center;
       padding: 10px;
       border: 1px solid #dfe7e1;
       border-radius: 18px;
       background: #eaf2ec;
+      overflow: auto;
+      overscroll-behavior: contain;
     }
-    .export-image-frame img { display: block; width: min(100%, 270px); height: auto; max-height: 58vh; object-fit: contain; border-radius: 8px; box-shadow: 0 12px 26px rgba(16, 54, 31, .16); -webkit-touch-callout: default; }
-    .export-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .export-image-frame img { display: block; width: min(100%, 270px); height: auto; border-radius: 8px; box-shadow: 0 12px 26px rgba(16, 54, 31, .16); -webkit-touch-callout: default; }
+    .export-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     .export-actions .secondary { min-height: 44px; }
+    .export-actions .export-return { grid-column: 1 / -1; }
     @media (max-width: 480px) {
       .export-panel { width: min(100%, 360px); padding: 16px; border-radius: 20px; }
       .export-image-frame { min-height: 210px; }
-      .export-image-frame img { width: min(100%, 230px); max-height: 52vh; }
+      .export-image-frame img { width: min(100%, 230px); }
     }
     noscript { display: block; margin: 30px; padding: 15px; background: #fff0ea; color: #8d2819; }
 
@@ -2816,12 +2820,14 @@
       <div class="export-heading">
         <span>RESULT POSTER</span>
         <h2 id="exportTitle">答题结果海报</h2>
-        <p id="exportHelper">长按图片即可保存到相册。</p>
+        <p id="exportHelper">优先点击“系统保存图片”；未支持时可打开原图保存。</p>
       </div>
       <div class="export-image-frame"><img id="exportImage" alt="答题结果海报预览"></div>
       <div class="export-actions">
-        <button class="secondary" id="saveExportBtn" type="button" hidden>保存图片</button>
-        <button class="secondary alt" id="dismissExportBtn" type="button">返回结果页</button>
+        <button class="secondary" id="saveExportBtn" type="button" hidden>系统保存图片</button>
+        <button class="secondary" id="copyExportBtn" type="button" hidden>复制图片</button>
+        <button class="secondary alt" id="openExportBtn" type="button">打开原图</button>
+        <button class="secondary alt export-return" id="dismissExportBtn" type="button">返回结果页</button>
       </div>
     </div>
   </div>
@@ -2982,6 +2988,9 @@
     let activeShareMode = "link";
     let exportInProgress = false;
     let exportPreviousFocus = null;
+    let exportBlob = null;
+    let exportDataUrl = "";
+    let exportProfile = null;
 
     function showScreen(id) {
       document.querySelectorAll(".screen").forEach((screen) => screen.classList.toggle("active", screen.id === id));
@@ -3341,18 +3350,120 @@
       $("exportModal").classList.remove("show");
       $("exportModal").setAttribute("aria-hidden", "true");
       $("exportImage").removeAttribute("src");
+      exportBlob = null;
+      exportDataUrl = "";
+      exportProfile = null;
       (exportPreviousFocus || $("exportBtn")).focus({ preventScroll: true });
       exportPreviousFocus = null;
     }
 
-    function showExportPreview(dataUrl, profile) {
+    function createExportFile(blob, profile) {
+      if (typeof File !== "function") return null;
+      try {
+        return new File([blob], `football-persona-${profile.key}.png`, { type: "image/png" });
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function canSaveExportToSystem(blob, profile) {
+      if (!window.isSecureContext || typeof navigator.share !== "function" || typeof navigator.canShare !== "function") return false;
+      const file = createExportFile(blob, profile);
+      if (!file) return false;
+      try {
+        return navigator.canShare({ files: [file] });
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function canCopyExportImage() {
+      return window.isSecureContext && navigator.clipboard && typeof navigator.clipboard.write === "function" && typeof ClipboardItem === "function";
+    }
+
+    function blobToDataUrl(blob) {
+      return new Promise((resolve, reject) => {
+        if (typeof FileReader !== "function") {
+          reject(new Error("FileReader unavailable"));
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(reader.error || new Error("image preview unavailable"));
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function dataUrlToBlob(dataUrl) {
+      const parts = dataUrl.split(",");
+      if (parts.length !== 2) throw new Error("image data unavailable");
+      const mimeMatch = parts[0].match(/data:([^;]+);base64/i);
+      const mimeType = mimeMatch ? mimeMatch[1] : "image/png";
+      const binary = atob(parts[1]);
+      const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+      return new Blob([bytes], { type: mimeType });
+    }
+
+    function showExportPreview(dataUrl, blob, profile) {
+      exportBlob = blob;
+      exportDataUrl = dataUrl;
+      exportProfile = profile;
       $("exportImage").src = dataUrl;
       $("exportImage").alt = `${profile.title}答题结果海报预览`;
-      $("exportHelper").textContent = "长按图片即可保存到相册。";
+      const systemSaveAvailable = canSaveExportToSystem(blob, profile);
+      const copyAvailable = canCopyExportImage();
+      $("saveExportBtn").hidden = !systemSaveAvailable;
+      $("copyExportBtn").hidden = !copyAvailable;
+      $("exportHelper").textContent = systemSaveAvailable
+        ? "点击“系统保存图片”调用系统面板，可选择保存到相册。"
+        : copyAvailable
+          ? "点击“复制图片”后可粘贴到聊天或相册；也可打开原图保存。"
+          : "点击“打开原图”进入原尺寸图片，再用系统菜单保存。";
       exportPreviousFocus = document.activeElement;
       $("exportModal").classList.add("show");
       $("exportModal").setAttribute("aria-hidden", "false");
       $("closeExportBtn").focus({ preventScroll: true });
+    }
+
+    async function saveExportToSystem() {
+      if (!exportBlob || !exportProfile) return;
+      const file = createExportFile(exportBlob, exportProfile);
+      if (!file || typeof navigator.share !== "function") {
+        toast("当前环境不支持系统保存，请打开原图");
+        return;
+      }
+      try {
+        await navigator.share({ title: "答题结果海报", files: [file] });
+        toast("已打开系统保存面板");
+      } catch (error) {
+        if (error && error.name === "AbortError") return;
+        toast("系统保存暂不可用，请打开原图");
+      }
+    }
+
+    async function copyExportImage() {
+      if (!exportBlob || !canCopyExportImage()) {
+        toast("当前环境不支持复制图片，请打开原图");
+        return;
+      }
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ "image/png": exportBlob })]);
+        toast("图片已复制，可粘贴保存");
+      } catch (error) {
+        toast("复制图片失败，请打开原图");
+      }
+    }
+
+    function openExportOriginal() {
+      if (!exportDataUrl) return;
+      const link = document.createElement("a");
+      link.href = exportDataUrl;
+      link.target = "_blank";
+      link.rel = "noopener";
+      document.body.append(link);
+      link.click();
+      link.remove();
+      toast("已打开原尺寸图片，请用系统菜单保存");
     }
 
     function createRoundedRect(ctx, x, y, width, height, radius) {
@@ -3460,7 +3571,7 @@
       try {
         const canvas = document.createElement("canvas");
         canvas.width = 1080;
-        canvas.height = 1440;
+        canvas.height = 1920;
         const ctx = canvas.getContext("2d");
         if (!ctx) throw new Error("canvas unavailable");
 
@@ -3481,7 +3592,7 @@
         fillRoundedRect(ctx, 0, 0, 760, 980, 46, "rgba(255,255,255,.92)");
         ctx.restore();
 
-        fillRoundedRect(ctx, 78, 78, 924, 1260, 42, "rgba(255,255,255,.94)");
+        fillRoundedRect(ctx, 78, 78, 924, 1800, 42, "rgba(255,255,255,.94)");
 
         const heroGradient = ctx.createLinearGradient(78, 78, 1002, 620);
         heroGradient.addColorStop(0, resultBg);
@@ -3556,7 +3667,7 @@
         ];
         hudItems.forEach(([label, value], index) => {
           const boxX = 132 + (index % 2) * 408;
-          const boxY = 1034 + Math.floor(index / 2) * 136;
+          const boxY = 1010 + Math.floor(index / 2) * 136;
           const boxWidth = index === 2 ? 816 : 396;
           fillRoundedRect(ctx, boxX, boxY, boxWidth, 112, 22, "#f5f8f5");
           ctx.fillStyle = "#6f8074";
@@ -3567,7 +3678,7 @@
           wrapText(ctx, value, boxX + 24, boxY + 56, boxWidth - 48, 38, index === 2 ? 2 : 1);
         });
 
-        const traitStartY = 1208;
+        const traitStartY = 1290;
         profile.traits.forEach(([name, value], index) => {
           const boxX = 132 + (index % 2) * 408;
           const boxY = traitStartY + Math.floor(index / 2) * 82;
@@ -3582,14 +3693,40 @@
           ctx.fillText(String(value), boxX + 322, boxY + 28);
         });
 
+        const insightItems = [
+          ["你的强项", profile.strength],
+          ["容易跑偏", profile.reminder],
+          ["最佳搭档", profile.partner]
+        ];
+        ctx.fillStyle = "#678072";
+        ctx.font = "900 22px 'DIN Alternate','PingFang SC',sans-serif";
+        ctx.fillText("MATCH NOTES", 132, 1488);
+        insightItems.forEach(([label, value], index) => {
+          const boxY = 1512 + index * 116;
+          fillRoundedRect(ctx, 132, boxY, 816, 100, 22, "#f5f8f5");
+          ctx.fillStyle = theme;
+          ctx.font = "900 22px 'PingFang SC','Microsoft YaHei',sans-serif";
+          ctx.fillText(label, 160, boxY + 28);
+          ctx.fillStyle = "#203327";
+          ctx.font = "600 25px 'PingFang SC','Microsoft YaHei',sans-serif";
+          wrapText(ctx, value, 160, boxY + 58, 752, 32, 2);
+        });
+
         ctx.fillStyle = "#678072";
         ctx.font = "500 20px 'PingFang SC','Microsoft YaHei',sans-serif";
-        ctx.fillText("球迷人格 · 2026  本图由本地页面自动生成", 132, 1378);
+        ctx.fillText("球迷人格 · 2026  本图由本地页面自动生成", 132, 1876);
 
         if (shouldPreviewExport()) {
-          const imageDataUrl = canvas.toDataURL(mimeType, isJpg ? 0.92 : undefined);
-          showExportPreview(imageDataUrl, profile);
-          toast("海报已生成，长按图片保存");
+          let imageDataUrl;
+          try {
+            imageDataUrl = canvas.toDataURL(mimeType, isJpg ? 0.92 : undefined);
+            var previewBlob = dataUrlToBlob(imageDataUrl);
+          } catch (error) {
+            previewBlob = await canvasToBlob(canvas, mimeType, isJpg ? 0.92 : undefined);
+            imageDataUrl = await blobToDataUrl(previewBlob);
+          }
+          showExportPreview(imageDataUrl, previewBlob, profile);
+          toast("海报已生成");
           return;
         }
         const blob = await canvasToBlob(canvas, mimeType, isJpg ? 0.92 : undefined);
@@ -3652,6 +3789,9 @@
     });
     $("exportBtn").addEventListener("click", () => exportAnswers("png"));
     $("closeExportBtn").addEventListener("click", closeExportPreview);
+    $("saveExportBtn").addEventListener("click", saveExportToSystem);
+    $("copyExportBtn").addEventListener("click", copyExportImage);
+    $("openExportBtn").addEventListener("click", openExportOriginal);
     $("dismissExportBtn").addEventListener("click", closeExportPreview);
     $("exportModal").addEventListener("click", (event) => { if (event.target === $("exportModal")) closeExportPreview(); });
     document.addEventListener("keydown", (event) => {
